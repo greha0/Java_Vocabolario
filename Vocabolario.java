@@ -5,17 +5,18 @@ import java.io.IOException;
 
 /**
  * La classe vocabolario memorizza in un array tutte le parole di un file di testo
+ *
  * @author Greta Brugnatti
  */
 
 public class Vocabolario {
-    private String [] array;
+    private String[] array;
     private int cont;
 
     /**
      * Crea un vocabolario di 10000 caselle
      */
-    public Vocabolario(){
+    public Vocabolario() {
         array = new String[10000];
         cont = 0;
         System.out.println("E' stato creato un vocabolario vuoto");
@@ -23,26 +24,28 @@ public class Vocabolario {
 
     /**
      * Crea un vocabolario di caselle date
+     *
      * @param dim Numero di caselle (numero parole)
      */
-    public Vocabolario(int dim){
+    public Vocabolario(int dim) {
         array = new String[dim];
         cont = 0;
-        System.out.println("E' stato creato un vocabolario da " + dim + "spazi" );
+        System.out.println("E' stato creato un vocabolario da " + dim + "spazi");
     }
 
     /**
      * Controlla se la parola è già presente nel vocabolario
+     *
      * @param parola
      * @return
      */
-    public boolean isPresente(String parola){
-        if(cont == 0){
+    public boolean isPresente(String parola) {
+        if (cont == 0) {
             return false;
         }
 
-        for(int i=0; i<cont; i++){
-            if(array[i].equals(parola)){
+        for (int i = 0; i < cont; i++) {
+            if (array[i].equals(parola)) {
                 return true;
             }
         }
@@ -51,24 +54,25 @@ public class Vocabolario {
 
     /**
      * Aggiunge una parola
+     *
      * @param word Parola
      */
-    public void addWord(String word){
-        if(cont < array.length) {
+    public void addWord(String word) {
+        if (cont < array.length) {
             if (!isPresente(word)) {
                 array[cont] = word;
                 cont++;
             }
         } else {
-            String [] temp = new String[cont + 10000];
-            for(int i=0; i<cont; i++){
-                temp[i] = array[i];
-            }
+            String[] temp = new String[cont + 10000];
+            System.arraycopy(array, 0, temp, 0, cont);
             array = temp;
         }
     }
+
     /**
      * Aggiunge parole da file
+     *
      * @param percorsoFile
      * @throws Exception
      */
@@ -78,27 +82,39 @@ public class Vocabolario {
         String st;
 
         while ((st = br.readLine()) != null) {
-            String [] sts = st.split("\\P{Alpha}+");
+            String[] sts = st.split("\\P{Alpha}+");
 
-            for(int i = 0; i < sts.length; i++) {
-                 addWord(sts[i]);
+            for (int i = 0; i < sts.length; i++) {
+                addWord(sts[i]);
             }
         }
     }
 
+    /**
+     * Crea una stringa di tutte le parole del vocabolario
+     *
+     * @return Stringa
+     */
     @Override
-    public String toString(){
-        String st = new String();
-        for(int i=0; i<cont; i++){
-            st = st + array[i] + "\n";
+    public String toString() {
+        StringBuilder st = new StringBuilder();
+        for (int i = 0; i < cont; i++) {
+            st.append(array[i]).append("\n");
         }
-        return st;
+        return st.toString();
     }
 
-    static public void main (String [] args) throws Exception {
+    /**
+     * Butta via le parole che non rispettano il filtro selezionato
+     */
+    public void filter(Selezionatore s) {
+
+    }
+
+
+    static public void main(String[] args) throws Exception {
         Vocabolario voc = new Vocabolario();
-        voc.addWord("Yea");
-        voc.addWord("Yea");
-        voc.addFile("i_promessi_sposi.txt");
+        voc.addWord("casa");
+        // voc.addFile("i_promessi_sposi.txt");
     }
 }
