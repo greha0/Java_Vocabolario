@@ -30,7 +30,6 @@ public class Vocabolario {
     public Vocabolario(int dim) {
         array = new String[dim];
         cont = 0;
-        System.out.println("E' stato creato un vocabolario da " + dim + "spazi");
     }
 
     /**
@@ -67,6 +66,7 @@ public class Vocabolario {
             String[] temp = new String[cont + 10000];
             System.arraycopy(array, 0, temp, 0, cont);
             array = temp;
+            addWord(word);
         }
     }
 
@@ -108,13 +108,25 @@ public class Vocabolario {
      * Butta via le parole che non rispettano il filtro selezionato
      */
     public void filter(Selezionatore s) {
-
+        for(int i=0; i< cont; i++){
+            if (!s.passa(array[i])){
+                for(int k = i; k<cont-1; k++){
+                    array[k] = array[k+1];
+                }
+                cont--;
+                i--;
+            }
+        }
     }
 
 
     static public void main(String[] args) throws Exception {
         Vocabolario voc = new Vocabolario();
-        voc.addWord("casa");
-        // voc.addFile("i_promessi_sposi.txt");
+        SelezionePerIniziale spi = new SelezionePerIniziale('a');
+        SelezionePerLunghezza spl = new SelezionePerLunghezza(2);
+
+        voc.addFile("i_promessi_sposi.txt");
+        voc.filter(spi);
+        System.out.println(voc);
     }
 }

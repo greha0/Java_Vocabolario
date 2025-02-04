@@ -5,7 +5,7 @@ public class Selezionatore {
     public Selezionatore(){
 
     }
-    public boolean passa(){
+    public boolean passa(String str){
         return true;
     }
 }
